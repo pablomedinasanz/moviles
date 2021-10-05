@@ -1,7 +1,8 @@
-package com.example.calculadoracutre;
+package com.example.calculadora;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    public static final String EXTRA_MESSAGE = "com.example.calculadora.MESSAGE";
     private Button botonSuma;
     private Button botonResta;
     private Button botonMulti;
@@ -25,66 +28,84 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        respuesta = findViewById(R.id.respuesta);
-        num1 = findViewById(R.id.numero1);
-        num2 = findViewById(R.id.numero2);
+        num1 = findViewById(R.id.num1);
+        num2 = findViewById(R.id.num2);
 
-        botonSuma = findViewById(R.id.sumaBoton);
+        respuesta = (TextView) findViewById(R.id.respuestaCalculadora);
+
+        botonSuma = findViewById(R.id.sumaButton);
         botonSuma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                respuesta.setText(suma(Integer.parseInt(num1.getText().toString()) , (Integer.parseInt(num2.getText().toString()))) + "");
+                String envio;
+                respuesta.setText(suma(Integer.parseInt(num1.getText().toString()), Integer.parseInt(num2.getText().toString())));
+                envio = respuesta.getText().toString();
+                enviar(this, envio);
             }
         });
 
-        botonResta = findViewById(R.id.restaBoton);
+        botonResta = findViewById(R.id.restaButton);
         botonResta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                respuesta.setText(resta(Integer.parseInt(num1.getText().toString()) , (Integer.parseInt(num2.getText().toString()))) + "");
+                String envio;
+                respuesta.setText(resta(Integer.parseInt(num1.getText().toString()), Integer.parseInt(num2.getText().toString())));
+                envio = respuesta.getText().toString();
+                enviar(this, envio);
             }
         });
 
-        botonMulti = findViewById(R.id.multiBoton);
+        botonMulti = findViewById(R.id.multiButton);
         botonMulti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                respuesta.setText(multiplicacion(Integer.parseInt(num1.getText().toString()) , (Integer.parseInt(num2.getText().toString()))) + "");
+                String envio;
+                respuesta.setText(multiplicacion(Integer.parseInt(num1.getText().toString()), Integer.parseInt(num2.getText().toString())));
+                envio = respuesta.getText().toString();
+                enviar(this, envio);
             }
         });
 
-        botonDiv = findViewById(R.id.divBoton);
+        botonDiv = findViewById(R.id.divButton);
         botonDiv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                respuesta.setText(division(Integer.parseInt(num1.getText().toString()) , (Integer.parseInt(num2.getText().toString()))) + "");
+                String envio;
+                respuesta.setText(division(Integer.parseInt(num1.getText().toString()), Integer.parseInt(num2.getText().toString())));
+                envio = respuesta.getText().toString();
+                enviar(this, envio);
             }
         });
-
     }
 
-    public double suma(double a, double b) {
+    public int suma (int a, int b){
 
         return a+b;
     }
 
-    public double resta(double a, double b) {
+    public int resta (int a, int b){
 
         return a-b;
     }
 
-    public double multiplicacion(double a, double b) {
+    public int multiplicacion (int a, int b){
 
         return a*b;
     }
 
-    public double division(double a, double b) {
+    public int division (int a, int b){
 
-        double respuesta = 0;
-        if(respuesta != 0) {
+        int respuesta = 0;
+        if(b!=0){
             respuesta = a/b;
         }
-
         return a/b;
+
+    }
+
+    public void enviar(View.OnClickListener view, String envio) {
+        Intent intent = new Intent(this, RespuestaActivity.class);
+        intent.putExtra(EXTRA_MESSAGE, envio);
+        startActivity(intent);
     }
 }
